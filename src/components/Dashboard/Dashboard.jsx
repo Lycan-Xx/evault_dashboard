@@ -25,7 +25,7 @@ import {
 } from "lucide-react";
 
 const Dashboard = () => {
-  const [selectedTab, setSelectedTab] = useState("Dashboard");
+  const [selectedTab, setSelectedTab] = useState("Home"); // Default to Dashboard tab
 
   // Payment card data
   const cardData = [

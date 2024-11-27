@@ -27,11 +27,11 @@ const Sidebar = ({ selectedTab, setSelectedTab }) => {
         {menuItems.map((item) => (
           <button
             key={item.name}
-            onClick={() => setSelectedTab(item.name)}
+            onClick={() => setSelectedTab(item.name)} // Set selected tab on click
             className={`flex items-center p-3 rounded-md w-full transition duration-300 ${
               selectedTab === item.name
-                ? "bg-blue-600 text-white"
-                : "text-gray-700 hover:bg-blue-50"
+                ? "bg-blue-600 text-white" // Highlight active tab
+                : "text-gray-700 hover:bg-blue-50" // Style for inactive tabs
             }`}
           >
             <item.icon className="mr-3" />
