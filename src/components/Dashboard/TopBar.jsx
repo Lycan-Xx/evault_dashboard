@@ -16,8 +16,8 @@ const TopBar = () => {
   return (
     <div className="relative flex justify-between items-center mb-6">
       {/* Account Balance Section */}
-      <div className="text-white text-xl font-bold flex items-center space-x-2">
-        <span>{showBalance ? "Wallet Balance: ₦2,500.98" : "Wallet Balance: ****"}</span>
+      <div className="text-[#025798] text-xl font-bold flex items-center space-x-2">
+        <span>{showBalance ? "Wallet Balance: ₦2,500.98" : "Wallet Balance: ₦ * * * * *"}</span>
         <button onClick={toggleBalance} className="focus:outline-none">
           {showBalance ? (
             <EyeOff className="text-white hover:text-blue-600 cursor-pointer" size={20} />
@@ -29,8 +29,8 @@ const TopBar = () => {
 
       {/* Notification and User Avatar Section */}
       <div className="flex space-x-4 items-center">
-        <Bell className="text-white hover:text-blue-600 cursor-pointer" size={24} />
-        <Mail className="text-white hover:text-blue-600 cursor-pointer" size={24} />
+        <Bell className="text-[#025798] hover:text-blue-600 cursor-pointer" size={24} />
+        <Mail className="text-[#025798] hover:text-blue-600 cursor-pointer" size={24} />
         <div className="relative">
           <img
             src="https://picsum.photos/id/237/200/300"

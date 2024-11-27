@@ -1,17 +1,17 @@
 import React from "react";
 import { User } from "lucide-react";
-// import logo from "../assets/logo.jpg";
 
 const Sidebar = ({ selectedTab, setSelectedTab }) => {
   const menuItems = [
     { name: "Home", icon: User },
-    // Other permanent items can go here
+    { name: "Trade", icon: User },
+    { name: "Vault", icon: User },
+    { name: "Settings", icon: User },
   ];
 
   return (
-    <div className="bg-white shadow-md w-64 p-6">
+    <div className="bg-white shadow-md w-64 p-6 relative">
       <div className="flex items-center mb-6">
-        {/* <img src={logo} alt="logo" className="w-12 h-12 mr-2" /> */}
         <h2 className="text-2xl font-bold text-blue-600">eVault</h2>
       </div>
       <div className="text-center mb-6">

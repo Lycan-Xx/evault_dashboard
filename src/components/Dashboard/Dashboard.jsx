@@ -8,6 +8,11 @@ import PaymentCards from "../Dashboard/PaymentCard";
 import TabContent from "./TabContents";
 import Services from "./Services";
 
+// Import mockup components
+import Trade from "./Trade";
+import Vault from "./Vault";
+import Settings from "./Settings";
+
 // Import icons for services
 import {
   Wallet,
@@ -20,7 +25,7 @@ import {
 } from "lucide-react";
 
 const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState(null); // Manage active tab state
+  const [selectedTab, setSelectedTab] = useState("Dashboard");
 
   // Payment card data
   const cardData = [
@@ -65,60 +70,55 @@ const Dashboard = () => {
     recipient: `Recipient ${i + 1}`,
   }));
 
-  const handleTabClick = (tab) => {
-    setActiveTab(activeTab === tab ? null : tab);
+  const renderTabContent = () => {
+    switch (selectedTab) {
+      case "Trade":
+        return <Trade />;
+      case "Vault":
+        return <Vault />;
+      case "Settings":
+        return <Settings />;
+      case "Transfer":
+      case "Withdraw":
+      case "History":
+        return <TabContent selectedTab={selectedTab} transferHistory={transferHistory} />;
+      default:
+        return null;
+    }
   };
 
-  // Services Section Spring Animation
-  const servicesSpring = useSpring({
-    opacity: activeTab === null ? 1 : 0,
-    transform: activeTab === null ? "translateY(0px)" : "translateY(-20px)",
-    config: { tension: 180, friction: 20, duration: 300 },
-    delay: activeTab === null ? 0 : 300, // Delay for fade-out
+  // Spring animations
+  const homeSpring = useSpring({
+    opacity: selectedTab === "Home" ? 1 : 0,
+    transform: selectedTab === "Home" ? "translateY(0px)" : "translateY(-20px)",
+    config: { tension: 200, friction: 25 },
   });
 
-  // Tab Content Spring Animation
-  const tabContentSpring = useSpring({
-    opacity: activeTab ? 1 : 0,
-    transform: activeTab ? "translateY(0px)" : "translateY(-20px)",
-    config: { tension: 180, friction: 20, duration: 300 },
-    delay: activeTab ? 0 : 300, // Delay for fade-out
+  const contentSpring = useSpring({
+    opacity: selectedTab !== "Home" ? 1 : 0,
+    transform: selectedTab !== "Home" ? "translateY(0px)" : "translateY(20px)",
+    config: { tension: 200, friction: 25 },
   });
 
   return (
-    <div className="bg-blue-800 h-[4rm] flex">
-      <Sidebar selectedTab={"Home"} setSelectedTab={() => {}} />
-
+    <div className="bg-gray-100 min-h-screen flex">
+      <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
       <div className="flex-1 p-6">
         <TopBar />
-        <PaymentCards cardData={cardData} />
 
-        <div className="my-6">
-          <div className="flex space-x-4">
-            {["Transfer", "Withdraw", "History"].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => handleTabClick(tab)}
-                className={`py-2 px-4 rounded-md ${
-                  activeTab === tab ? "bg-blue-600 text-white" : "bg-white text-gray-700"
-                }`}
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Tab Content */}
-        <animated.div style={tabContentSpring}>
-          {activeTab && (
-            <TabContent selectedTab={activeTab} transferHistory={transferHistory} />
+        {/* Home Section */}
+        <animated.div style={homeSpring}>
+          {selectedTab === "Home" && (
+            <>
+              <PaymentCards cardData={cardData} />
+              <Services services={services} />
+            </>
           )}
         </animated.div>
 
-        {/* Services Section */}
-        <animated.div style={servicesSpring}>
-          {activeTab === null && <Services services={services} />}
+        {/* Tab Content */}
+        <animated.div style={contentSpring}>
+          {selectedTab !== "Home" && renderTabContent()}
         </animated.div>
       </div>
     </div>
