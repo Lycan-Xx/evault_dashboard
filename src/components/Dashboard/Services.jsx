@@ -1,6 +1,6 @@
 import React from "react";
 
-const Services = ({ services }) => {
+const Services = ({ services, onServiceClick }) => {
   return (
     <div className="bg-white rounded-xl p-6 shadow-md">
       <h3 className="text-xl font-bold mb-4">Our Services</h3>
@@ -8,7 +8,8 @@ const Services = ({ services }) => {
         {services.map((service, index) => (
           <div
             key={index}
-            className="flex flex-col items-center p-4 border rounded-md hover:shadow-lg"
+            className="flex flex-col items-center p-4 border rounded-md hover:shadow-lg cursor-pointer"
+            onClick={() => onServiceClick(service.component)}
           >
             <service.icon size={48} strokeWidth={1.5} />
             <h4 className="text-lg font-bold">{service.title}</h4>

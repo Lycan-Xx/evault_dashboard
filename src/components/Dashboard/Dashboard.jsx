@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { useSpring, animated } from "react-spring";
-
-// Import all subcomponents
 import Sidebar from "../Dashboard/SideBar";
 import TopBar from "./TopBar";
 import PaymentCards from "../Dashboard/PaymentCard";
 import TabContent from "./TabContents";
 import Services from "./Services";
-
-// Import mockup components
 import Trade from "./Trade";
 import Vault from "./Vault";
 import Settings from "./Settings";
-
-// Import icons for services
+import Databundles from "./Databundles";
+import Schoolfees from "./Schoolfees";
+import Airtime from "./Airtime";
+import Electricity from "./Electricity";
+import Remita from "./Remita";
+import Cable from "./Cable";
 import {
   Wallet,
   PhoneCall,
@@ -22,45 +22,26 @@ import {
   Receipt,
   SatelliteDishIcon,
   Train,
+  PlugZap,
 } from "lucide-react";
 
 const Dashboard = () => {
-  const [selectedTab, setSelectedTab] = useState("Home"); // Default to Dashboard tab
+  const [selectedTab, setSelectedTab] = useState("Home");
+  const [selectedService, setSelectedService] = useState(null);
 
-  // Payment card data
   const cardData = [
-    {
-      name: "Wema Bank",
-      balance: "₦2,500.98",
-      cardNumber: "**** **** **** 1234",
-      expiry: "05/26",
-      cardholder: "John Doe",
-    },
-    {
-      name: "Monie Point",
-      balance: "₦0.00",
-      cardNumber: "**** **** **** 5678",
-      expiry: "06/26",
-      cardholder: "Jane Doe",
-    },
-    {
-      name: "Zenith Bank",
-      balance: "₦0.00",
-      cardNumber: "**** **** **** 9101",
-      expiry: "07/26",
-      cardholder: "Alex Smith",
-    },
+    { name: "Wema Bank", balance: "₦2,500.98", cardNumber: "**** **** **** 1234", expiry: "05/26", cardholder: "John Doe" },
+    { name: "Monie Point", balance: "₦0.00", cardNumber: "**** **** **** 5678", expiry: "06/26", cardholder: "Jane Doe" },
+    { name: "Zenith Bank", balance: "₦0.00", cardNumber: "**** **** **** 9101", expiry: "07/26", cardholder: "Alex Smith" },
   ];
 
-  // Services data
   const services = [
-    { title: "Instant Payment", description: "Pay instantly", icon: Wallet },
-    { title: "Airtime Recharge", description: "Top up airtime", icon: PhoneCall },
-    { title: "Data Bundles", description: "Purchase data", icon: Globe },
-    { title: "School Fees Payment", description: "Pay school fees", icon: Building },
-    { title: "Remita Payments", description: "Remita services", icon: Receipt },
-    { title: "Cable Subscriptions", description: "Subscribe to cable", icon: SatelliteDishIcon },
-    { title: "Transport Bookings", description: "Book transportation", icon: Train },
+    { title: "Data Bundles", description: "Purchase data", icon: Globe, component: "Databundles" },
+    { title: "School Fees Payment", description: "Pay school fees", icon: Building, component: "Schoolfees" },
+    { title: "Airtime Recharge", description: "Top up airtime", icon: PhoneCall, component: "Airtime" },
+    { title: "Electricity", description: "Buy power units", icon: PlugZap, component: "Electricity" },
+    { title: "Remita Payments", description: "Remita services", icon: Receipt, component: "Remita" },
+    { title: "Cable Subscriptions", description: "Subscribe to cable", icon: SatelliteDishIcon, component: "Cable" },
   ];
 
   const transferHistory = Array.from({ length: 10 }, (_, i) => ({
@@ -69,6 +50,31 @@ const Dashboard = () => {
     amount: `₦${(1000 + i * 100).toFixed(2)}`,
     recipient: `Recipient ${i + 1}`,
   }));
+
+  const handleServiceClick = (service) => {
+    setSelectedService(service);
+  };
+
+  const renderSelectedService = () => {
+    if (!selectedService) return null;
+
+    switch (selectedService) {
+      case "Databundles":
+        return <Databundles />;
+      case "Schoolfees":
+        return <Schoolfees />;
+      case "Airtime":
+        return <Airtime />;
+      case "Electricity":
+        return <Electricity />;
+      case "Remita":
+        return <Remita />;
+      case "Cable":
+        return <Cable />;
+      default:
+        return null;
+    }
+  };
 
   const renderTabContent = () => {
     switch (selectedTab) {
@@ -87,7 +93,6 @@ const Dashboard = () => {
     }
   };
 
-  // Spring animations
   const homeSpring = useSpring({
     opacity: selectedTab === "Home" ? 1 : 0,
     transform: selectedTab === "Home" ? "translateY(0px)" : "translateY(-20px)",
@@ -105,18 +110,28 @@ const Dashboard = () => {
       <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
       <div className="flex-1 p-6">
         <TopBar />
-
-        {/* Home Section */}
         <animated.div style={homeSpring}>
           {selectedTab === "Home" && (
             <>
-              <PaymentCards cardData={cardData} />
-              <Services services={services} />
+              {selectedService ? (
+                <>
+                  <button
+                    onClick={() => setSelectedService(null)}
+                    className="mb-4 px-4 py-2 bg-blue-600 text-white rounded-md"
+                  >
+                    Back to Dashboard
+                  </button>
+                  {renderSelectedService()}
+                </>
+              ) : (
+                <>
+                  <PaymentCards cardData={cardData} />
+                  <Services services={services} onServiceClick={handleServiceClick} />
+                </>
+              )}
             </>
           )}
         </animated.div>
-
-        {/* Tab Content */}
         <animated.div style={contentSpring}>
           {selectedTab !== "Home" && renderTabContent()}
         </animated.div>
