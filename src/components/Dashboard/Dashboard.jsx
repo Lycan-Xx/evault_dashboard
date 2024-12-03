@@ -15,13 +15,11 @@ import Electricity from "./Electricity";
 import Remita from "./Remita";
 import Cable from "./Cable";
 import {
-  Wallet,
   PhoneCall,
   Globe,
   Building,
   Receipt,
   SatelliteDishIcon,
-  Train,
   PlugZap,
 } from "lucide-react";
 
