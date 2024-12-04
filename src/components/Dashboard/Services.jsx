@@ -3,7 +3,7 @@ import React from "react";
 const Services = ({ services, onServiceClick }) => {
   return (
     <div className="bg-white rounded-xl p-6 shadow-md">
-      <h3 className="text-xl font-bold mb-4">Our Services</h3>
+      <h3 className="text-xl font-bold mb-4">Services</h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {services.map((service, index) => (
           <div
