@@ -3,11 +3,11 @@ import { useSpring, animated } from "react-spring";
 import Sidebar from "../Dashboard/SideBar";
 import TopBar from "./TopBar";
 import PaymentCards from "../Dashboard/PaymentCard";
-import TabContent from "./TabContents";
 import Services from "./Services";
 import Trade from "./Trade";
 import Vault from "./Vault";
 import Settings from "./Settings";
+import TabContent from "./TabContents";
 import Databundles from "./Databundles";
 import Schoolfees from "./Schoolfees";
 import Airtime from "./Airtime";
@@ -53,22 +53,26 @@ const Dashboard = () => {
     setSelectedService(service);
   };
 
+  const handleBack = () => {
+    setSelectedService(null);
+  };
+
   const renderSelectedService = () => {
     if (!selectedService) return null;
 
     switch (selectedService) {
       case "Databundles":
-        return <Databundles />;
+        return <Databundles onBack={handleBack} />;
       case "Schoolfees":
-        return <Schoolfees />;
+        return <Schoolfees onBack={handleBack} />;
       case "Airtime":
-        return <Airtime />;
+        return <Airtime onBack={handleBack} />;
       case "Electricity":
-        return <Electricity />;
+        return <Electricity onBack={handleBack} />;
       case "Remita":
-        return <Remita />;
+        return <Remita onBack={handleBack} />;
       case "Cable":
-        return <Cable />;
+        return <Cable onBack={handleBack} />;
       default:
         return null;
     }
@@ -112,10 +116,7 @@ const Dashboard = () => {
           {selectedTab === "Home" && (
             <>
               {selectedService ? (
-                <>
-                 
-                  {renderSelectedService()}
-                </>
+                renderSelectedService()
               ) : (
                 <>
                   <PaymentCards cardData={cardData} />
