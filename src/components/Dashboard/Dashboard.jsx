@@ -14,6 +14,7 @@ import Airtime from "./Airtime";
 import Electricity from "./Electricity";
 import Remita from "./Remita";
 import Cable from "./Cable";
+import Portfolio from "./Portfolio";
 import {
   PhoneCall,
   Globe,
@@ -84,6 +85,8 @@ const Dashboard = () => {
         return <Trade />;
       case "Vault":
         return <Vault />;
+      case "Portfolio":
+        return <Portfolio />;
       case "Settings":
         return <Settings />;
       case "Transfer":
