@@ -7,14 +7,14 @@ import Services from "./Services";
 import Trade from "./Trade";
 import Vault from "./Vault";
 import Settings from "./Settings";
-import TabContent from "./TabContents";
+import TabContent from "./TabContents/TabContent";
 import Databundles from "./Databundles";
 import Schoolfees from "./Schoolfees";
 import Airtime from "./Airtime";
 import Electricity from "./Electricity";
 import Remita from "./Remita";
 import Cable from "./Cable";
-import Portfolio from "./Portfolio";
+import Portfolio from "./Portfolio"; // Fixed import path
 import {
   PhoneCall,
   Globe,
@@ -24,9 +24,12 @@ import {
   PlugZap,
 } from "lucide-react";
 
-const Dashboard = () => {
+
+const Dashboard = () => { // Added component definition
   const [selectedTab, setSelectedTab] = useState("Home");
   const [selectedService, setSelectedService] = useState(null);
+  const [activeTab, setActiveTab] = useState(null); // Manage active tab state
+
 
   const cardData = [
     { name: "Wema Bank", balance: "₦2,500.98", cardNumber: "**** **** **** 1234", expiry: "05/26", cardholder: "John Doe" },
@@ -49,6 +52,11 @@ const Dashboard = () => {
     amount: `₦${(1000 + i * 100).toFixed(2)}`,
     recipient: `Recipient ${i + 1}`,
   }));
+
+
+  const handleTabClick = (tab) => {
+    setActiveTab(activeTab === tab ? null : tab);
+  };
 
   const handleServiceClick = (service) => {
     setSelectedService(service);
@@ -79,62 +87,99 @@ const Dashboard = () => {
     }
   };
 
-  const renderTabContent = () => {
-    switch (selectedTab) {
-      case "Trade":
-        return <Trade />;
-      case "Vault":
-        return <Vault />;
-      case "Portfolio":
-        return <Portfolio />;
-      case "Settings":
-        return <Settings />;
-      case "Transfer":
-      case "Withdraw":
-      case "History":
-        return <TabContent selectedTab={selectedTab} transferHistory={transferHistory} />;
-      default:
-        return null;
-    }
-  };
-
-  const homeSpring = useSpring({
-    opacity: selectedTab === "Home" ? 1 : 0,
-    transform: selectedTab === "Home" ? "translateY(0px)" : "translateY(-20px)",
-    config: { tension: 200, friction: 25 },
-  });
-
-  const contentSpring = useSpring({
-    opacity: selectedTab !== "Home" ? 1 : 0,
-    transform: selectedTab !== "Home" ? "translateY(0px)" : "translateY(20px)",
-    config: { tension: 200, friction: 25 },
-  });
-
-  return (
-    <div className="bg-gray-100 min-h-screen flex">
-      <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
-      <div className="flex-1 p-6">
-        <TopBar />
-        <animated.div style={homeSpring}>
-          {selectedTab === "Home" && (
-            <>
-              {selectedService ? (
-                renderSelectedService()
-              ) : (
-                <>
-                  <PaymentCards cardData={cardData} />
-                  <Services services={services} onServiceClick={handleServiceClick} />
-                </>
-              )}
-            </>
-          )}
-        </animated.div>
-        <animated.div style={contentSpring}>
-          {selectedTab !== "Home" && renderTabContent()}
-        </animated.div>
-      </div>
-    </div>
-  );
+	const renderTabContent = () => {
+  switch (selectedTab) {
+    case "Trade":
+      return <Trade />;
+    case "Vault":
+      return <Vault />;
+    case "Portfolio":
+      return <Portfolio />;
+    case "Settings":
+      return <Settings />;
+    case "Transfer":
+    case "Withdraw":
+    case "History":
+      return <TabContent selectedTab={selectedTab} transferHistory={transferHistory} />;
+    case "Home":
+      return (
+        <>
+          <TabContent selectedTab={selectedTab} />
+          <Services services={services} onServiceClick={handleServiceClick} />
+        </>
+      );
+    default:
+      return null;
+  }
 };
 
-export default Dashboard;
+	
+	  const homeSpring = useSpring({
+		opacity: selectedTab === "Home" ? 1 : 0,
+		transform: selectedTab === "Home" ? "translateY(0px)" : "translateY(-20px)",
+		config: { tension: 200, friction: 25 },
+	  });
+	
+	  const contentSpring = useSpring({
+		opacity: selectedTab !== "Home" ? 1 : 0,
+		transform: selectedTab !== "Home" ? "translateY(0px)" : "translateY(20px)",
+		config: { tension: 200, friction: 25 },
+	  });
+	
+	  return (
+		<div className="bg-gray-100 min-h-screen flex">
+  <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+  <div className="flex-1 p-6">
+    <TopBar />
+    <animated.div style={homeSpring}>
+      {selectedTab === "Home" && (
+        <>
+          {selectedService ? (
+            renderSelectedService()
+          ) : (
+            <>
+              <PaymentCards cardData={cardData} />
+
+              {/* Buttons for Tab Switching */}
+              <div className="my-6">
+                <div className="flex space-x-4">
+                  {["Transfer", "Withdraw", "History"].map((tab) => (
+                    <button
+                      key={tab}
+                      onClick={() => setSelectedTab(tab)} // Update `selectedTab`
+                      className={`py-2 px-4 rounded-md ${
+                        selectedTab === tab
+                          ? "bg-blue-600 text-white"
+                          : "bg-white text-gray-700"
+                      }`}
+                    >
+                      {tab}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Render TabContent */}
+              {["Transfer", "Withdraw", "History"].includes(selectedTab) && (
+                <TabContent
+                  selectedTab={selectedTab}
+                  transferHistory={transferHistory}
+                />
+              )}
+
+              <Services services={services} onServiceClick={handleServiceClick} />
+            </>
+          )}
+        </>
+      )}
+    </animated.div>
+    <animated.div style={contentSpring}>
+      {selectedTab !== "Home" && renderTabContent()}
+    </animated.div>
+  </div>
+</div>
+
+	  );
+	};
+	
+	export default Dashboard;

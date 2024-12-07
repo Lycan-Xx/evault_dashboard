@@ -15,7 +15,7 @@ const Sidebar = ({ selectedTab, setSelectedTab }) => {
   return (
     <div
       className={`bg-white shadow-md ${
-        isCollapsed ? "w-[7rem]" : "w-64"
+        isCollapsed ? "w-[6.7rem]" : "w-64"
       } h-screen p-6 relative transition-all duration-300 overflow-hidden`}
     >
       {/* Sidebar Header */}

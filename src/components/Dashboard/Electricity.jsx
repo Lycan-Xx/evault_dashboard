@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import clsx from "clsx";
 import { PlugZap, ArrowLeft } from "lucide-react";
 
-// List of Subservices for Electricity
 const services = [
   { title: "YEDC", description: "Yola Electricity Distribution", icon: PlugZap },
   { title: "PHCN", description: "Port Harcourt Electricity", icon: PlugZap },
@@ -22,15 +21,9 @@ const Electricity = ({ onBack }) => {
     setSelectedService(service);
   };
 
-  // Handle back button click
   const handleBackClick = () => {
-    if (selectedService) {
-      // If a service is selected, go back to the "Please choose your Service provider" state
-      setSelectedService(null); // Deselect the service
-    } else {
-      // If no service is selected, navigate back to the Dashboard
-      onBack(); // Trigger the back navigation to the Dashboard
-    }
+    if (selectedService) setSelectedService(null);
+    else onBack();
     setMeterId("");
     setPhoneNumber("");
     setEmail("");
@@ -48,8 +41,6 @@ const Electricity = ({ onBack }) => {
   return (
     <div className="max-w-6xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Electricity</h1>
-
-      {/* Show the back button when a service is selected or if no service is selected */}
       <button
         className="inline-flex items-center space-x-2 text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md p-1"
         aria-label="Go back"
@@ -59,32 +50,27 @@ const Electricity = ({ onBack }) => {
         <span>{selectedService ? "Back" : "Go to Dashboard"}</span>
       </button>
 
-
       {!selectedService ? (
-        <>
-         
-          <div className="bg-white rounded-xl p-6 shadow-md">
-            <h3 className="text-xl font-bold mb-4">Please choose your Service provider</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-              {services.map((service, index) => (
-                <div
-                  key={index}
-                  className="flex flex-col items-center p-4 border rounded-md hover:shadow-lg transition-transform duration-500 cursor-pointer"
-                  onClick={() => handleServiceClick(service)}
-                >
-                  <service.icon size={48} strokeWidth={1.5} />
-                  <h4 className="text-lg font-bold">{service.title}</h4>
-                  <p className="text-gray-600 text-sm">{service.description}</p>
-                </div>
-              ))}
-            </div>
+        <div className="bg-white rounded-xl p-6 shadow-md">
+          <h3 className="text-xl font-bold mb-4">Please choose your Service provider</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            {services.map((service, index) => (
+              <div
+                key={index}
+                className="flex flex-col items-center p-4 border rounded-md hover:shadow-lg transition-transform duration-500 cursor-pointer"
+                onClick={() => handleServiceClick(service)}
+              >
+                <service.icon size={48} strokeWidth={1.5} />
+                <h4 className="text-lg font-bold">{service.title}</h4>
+                <p className="text-gray-600 text-sm">{service.description}</p>
+              </div>
+            ))}
           </div>
-        </>
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 min-h-[500px]">
-          {/* Left Column: Image and Service Title */}
           <div
-            className="flex flex-col items-center rounded-lg  justify-center bg-cover bg-center text-white"
+            className="flex flex-col items-center rounded-lg justify-center bg-cover bg-center text-white"
             style={{
               backgroundImage: `url('https://picsum.photos/600/800')`,
             }}
@@ -94,13 +80,9 @@ const Electricity = ({ onBack }) => {
             </h3>
           </div>
 
-          {/* Right Column: Form */}
           <div className="flex flex-col justify-center space-y-6">
-            
-
             <h3 className="text-xl font-bold">Enter your details</h3>
 
-            {/* Meter ID Input */}
             <label className="block text-sm font-medium">Enter your Meter ID</label>
             <input
               type="text"
@@ -110,7 +92,6 @@ const Electricity = ({ onBack }) => {
               className="border p-2 rounded w-full"
             />
 
-            {/* Phone Number Input */}
             <label className="block text-sm font-medium">Enter your Phone Number</label>
             <input
               type="text"
@@ -121,8 +102,10 @@ const Electricity = ({ onBack }) => {
               }
               className="border p-2 rounded w-full"
             />
+            {phoneNumber.length !== 11 && phoneNumber.length > 0 && (
+              <p className="text-red-500 text-sm">Phone number must be 11 digits.</p>
+            )}
 
-            {/* Email Input (optional) */}
             <label className="block text-sm font-medium">Enter your Email (optional)</label>
             <input
               type="email"
@@ -132,7 +115,6 @@ const Electricity = ({ onBack }) => {
               className="border p-2 rounded w-full"
             />
 
-            {/* Amount Input */}
             <label className="block text-sm font-medium">Enter Amount</label>
             <input
               type="text"
@@ -142,19 +124,21 @@ const Electricity = ({ onBack }) => {
               className="border p-2 rounded w-full"
             />
 
-            {/* Proceed Button */}
             <button
               onClick={handleProceed}
-              disabled={!meterId || !phoneNumber || !amount}
+              disabled={!meterId || phoneNumber.length !== 11 || !amount}
               className={clsx(
                 "mt-6 px-6 py-3 rounded-md text-white font-bold text-sm transition duration-500",
-                meterId && phoneNumber && amount
+                meterId && phoneNumber.length === 11 && amount
                   ? "bg-blue-500 hover:bg-blue-600"
                   : "bg-gray-300 cursor-not-allowed"
               )}
             >
               {loading ? (
-                <span className="animate-pulse">Fetching data...</span>
+                <div className="flex items-center space-x-2">
+                  <span className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5"></span>
+                  <span>Processing...</span>
+                </div>
               ) : (
                 "Proceed"
               )}
