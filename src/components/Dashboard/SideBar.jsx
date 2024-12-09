@@ -1,31 +1,62 @@
-import React, { useState } from "react";
-import { User, Briefcase, DollarSign, PieChart, Settings, LogOut, ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import {
+  User,
+  Briefcase,
+  DollarSign,
+  PieChart,
+  Settings,
+  LogOut,
+  Menu,
+} from "lucide-react";
 
 const Sidebar = ({ selectedTab, setSelectedTab }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Monitor screen size to auto-collapse on smaller screens
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768); // Mobile breakpoint
+      if (window.innerWidth <= 768) {
+        setIsCollapsed(true);
+      }
+    };
+
+    handleResize(); // Check on initial load
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const menuItems = [
-    { name: "Home", icon: User },
+    { name: "Dashboard", icon: PieChart },
     { name: "Trade", icon: Briefcase },
     { name: "Vault", icon: DollarSign },
-    { name: "Portfolio", icon: PieChart },
+    { name: "Portfolio", icon: User },
     { name: "Settings", icon: Settings },
   ];
+
+  const loggedInUser = {
+    firstName: "Usman",
+    lastName: "Ahmad",
+    role: "Customer (User)",
+  };
 
   return (
     <div
       className={`bg-white shadow-md ${
         isCollapsed ? "w-[6.7rem]" : "w-64"
-      } h-screen p-6 relative transition-all duration-300 overflow-hidden`}
+      } min-h-screen p-6 relative transition-all duration-300 overflow-hidden`}
     >
       {/* Sidebar Header */}
       <div className="flex items-center justify-between mb-6">
-        {!isCollapsed && <h2 className="text-2xl font-bold text-blue-600">eVault</h2>}
+        {!isCollapsed && (
+          <h2 className="text-2xl font-bold text-blue-600">eVault</h2>
+        )}
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
           className="text-blue-600 focus:outline-none"
         >
-          {isCollapsed ? <ChevronRight size={24} /> : <ChevronLeft size={24} />}
+          <Menu size={24} />
         </button>
       </div>
 
@@ -40,50 +71,50 @@ const Sidebar = ({ selectedTab, setSelectedTab }) => {
         />
         {!isCollapsed && (
           <>
-            <h3 className="text-lg font-bold mt-2">Usman Ahmad</h3>
-            <p className="text-gray-600 text-sm">Customer (User)</p>
+            <h3 className="text-lg font-bold mt-2 text-gray-800 text-xl">
+              {loggedInUser.firstName} {loggedInUser.lastName}
+            </h3>
+            <p className="text-gray-600 text-base">{loggedInUser.role}</p>
           </>
         )}
       </div>
 
       {/* Navigation Menu */}
       <nav className="space-y-4">
-  {menuItems.map((item) => (
-    <button
-      key={item.name}
-      onClick={() => setSelectedTab(item.name)}
-      className={`flex items-center ${
-        isCollapsed ? "justify-center" : "justify-start"
-      } p-3 rounded-md w-full transition duration-300 ${
-        selectedTab === item.name
-          ? "bg-blue-600 text-white"
-          : "text-gray-700 hover:bg-blue-50"
-      }`}
-    >
-      {/* Icon with conditional color */}
-      <item.icon
-        size={isCollapsed ? 36 : 28}
-        className={`${
-          selectedTab === item.name ? "text-white" : "text-blue-600"
-        }`}
-      />
-      {/* Display text only in expanded state */}
-      {!isCollapsed && (
-        <span className="ml-3 text-left text-base">{item.name}</span>
-      )}
-    </button>
-  ))}
-</nav>
-
+        {menuItems.map((item) => (
+          <button
+            key={item.name}
+            onClick={() => setSelectedTab(item.name)}
+            className={`flex items-center ${
+              isCollapsed ? "justify-center" : "justify-start"
+            } p-3 rounded-md w-full transition duration-300 ${
+              selectedTab === item.name
+                ? "bg-blue-600 text-white"
+                : "text-gray-700 hover:bg-blue-50"
+            }`}
+          >
+            <item.icon
+              size={isCollapsed ? 36 : 28}
+              className={`${
+                selectedTab === item.name ? "text-white" : "text-blue-600"
+              }`}
+            />
+            {!isCollapsed && (
+              <span className="ml-3 text-left text-base">{item.name}</span>
+            )}
+          </button>
+        ))}
+      </nav>
 
       {/* Logout Button */}
       <button
-        className={`absolute bottom-6 ${
-          isCollapsed ? "left-6" : "left-6"
-        } bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 flex items-center`}
+        onClick={() => console.log("Logout action triggered")} // Add actual logout logic here
+        className={`absolute bottom-6 left-6 flex items-center p-3 rounded-md w-full transition duration-300 bg-red-600 text-white hover:bg-red-700`}
       >
-        <LogOut size={24} className="mr-2" />
-        {!isCollapsed && "Logout"}
+        <LogOut size={isCollapsed ? 36 : 28} />
+        {!isCollapsed && (
+          <span className="ml-3 text-left text-base">Logout</span>
+        )}
       </button>
     </div>
   );

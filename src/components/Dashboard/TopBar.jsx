@@ -20,9 +20,9 @@ const TopBar = () => {
         <span>{showBalance ? "Wallet Balance: ₦2,500.98" : "Wallet Balance: ₦ * * * * *"}</span>
         <button onClick={toggleBalance} className="focus:outline-none">
           {showBalance ? (
-            <EyeOff className="text-white hover:text-blue-600 cursor-pointer" size={20} />
+            <EyeOff className="text-blue-600 cursor-pointer" size={20} />
           ) : (
-            <Eye className="text-white hover:text-blue-600 cursor-pointer" size={20} />
+            <Eye className="text-blue-600 cursor-pointer" size={20} />
           )}
         </button>
       </div>
