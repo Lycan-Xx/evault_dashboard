@@ -1,59 +1,106 @@
 import React, { useState } from "react";
-import { ArrowRightLeft, Send } from "lucide-react";
+import { Send } from "lucide-react";
+import clsx from "clsx";
 
 const TransferForm = () => {
-  const [recipient, setRecipient] = useState("");
+  const [bank, setBank] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
   const [amount, setAmount] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleProceed = (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    alert(`Transferred ₦${amount} to ${recipient}`);
-    setRecipient("");
-    setAmount("");
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      alert("Transaction Successful!");
+    }, 500);
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="p-4 bg-gray-50 rounded-md shadow-md transition duration-500"
-    >
-      <h4 className="text-lg font-bold mb-4 flex items-center">
-        <ArrowRightLeft className="mr-2" /> Funds Transfer
-      </h4>
-      <div className="mb-4">
-        <label htmlFor="recipient" className="block text-gray-700 mb-2">
-          Recipient
-        </label>
-        <input
-          id="recipient"
-          type="text"
-          value={recipient}
-          onChange={(e) => setRecipient(e.target.value)}
-          placeholder="Enter recipient name"
-          className="w-full p-2 border rounded-md"
-        />
-      </div>
-      <div className="mb-4">
-        <label htmlFor="amount" className="block text-gray-700 mb-2">
-          Amount
-        </label>
-        <input
-          id="amount"
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          placeholder="Enter amount"
-          className="w-full p-2 border rounded-md"
-        />
-      </div>
-      <button
-        type="submit"
-        className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 flex items-center justify-center"
+    <div className="max-w-3xl mx-auto p-6">
+      {/* Transfer Form */}
+      <form
+        onSubmit={handleProceed}
+        className="p-6 bg-gray-50 rounded-md shadow-md space-y-6"
       >
-        <Send className="mr-2" /> Transfer
-      </button>
-    </form>
+        <h4 className="text-2xl font-bold text-center mb-6">Funds Transfer</h4>
+
+        {/* Bank Selection */}
+        <div>
+          <label htmlFor="bank" className="block text-sm font-medium mb-2">
+            Select Bank
+          </label>
+          <select
+            id="bank"
+            value={bank}
+            onChange={(e) => setBank(e.target.value)}
+            className="border p-2 rounded w-full"
+          >
+            <option value="" disabled>
+              Select a bank
+            </option>
+            {[
+              "Bank A",
+              "Bank B",
+              "Bank C",
+              "Bank D",
+              "Bank E",
+            ].map((bankName) => (
+              <option key={bankName} value={bankName}>
+                {bankName}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Account Number Input */}
+        <div>
+          <label htmlFor="accountNumber" className="block text-sm font-medium mb-2">
+            Account Number
+          </label>
+          <input
+            id="accountNumber"
+            type="text"
+            value={accountNumber}
+            onChange={(e) =>
+              setAccountNumber(e.target.value.replace(/\D/g, "").slice(0, 10))
+            }
+            placeholder="Enter 10-digit account number"
+            className="border p-2 rounded w-full"
+          />
+        </div>
+
+        {/* Amount Input */}
+        <div>
+          <label htmlFor="amount" className="block text-sm font-medium mb-2">
+            Amount
+          </label>
+          <input
+            id="amount"
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            placeholder="Enter amount"
+            className="border p-2 rounded w-full"
+          />
+        </div>
+
+        {/* Proceed Button */}
+        <button
+          type="submit"
+          disabled={!bank || !accountNumber || !amount || loading}
+          className={clsx(
+            "w-full py-3 rounded-md text-white font-bold text-lg flex justify-center items-center transition duration-500",
+            bank && accountNumber && amount && !loading
+              ? "bg-blue-500 hover:bg-blue-600"
+              : "bg-gray-300 cursor-not-allowed"
+          )}
+        >
+          {loading ? <span className="animate-pulse">Processing...</span> : "Proceed"}
+        </button>
+      </form>
+    </div>
   );
 };
 

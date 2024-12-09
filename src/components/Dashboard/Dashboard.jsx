@@ -23,6 +23,7 @@ import {
   SatelliteDishIcon,
   PlugZap,
 } from "lucide-react";
+import TransferForm from "./TabContents/TransferForm";
 
 
 const Dashboard = () => { // Added component definition
@@ -67,25 +68,28 @@ const Dashboard = () => { // Added component definition
   };
 
   const renderSelectedService = () => {
-    if (!selectedService) return null;
-
-    switch (selectedService) {
-      case "Databundles":
-        return <Databundles onBack={handleBack} />;
-      case "Schoolfees":
-        return <Schoolfees onBack={handleBack} />;
-      case "Airtime":
-        return <Airtime onBack={handleBack} />;
-      case "Electricity":
-        return <Electricity onBack={handleBack} />;
-      case "Remita":
-        return <Remita onBack={handleBack} />;
-      case "Cable":
-        return <Cable onBack={handleBack} />;
-      default:
-        return null;
-    }
+	if (!selectedService) return null;
+  
+	switch (selectedService) {
+	  case "Databundles":
+		return <Databundles onBack={handleBack} />;
+	  case "Schoolfees":
+		return <Schoolfees onBack={handleBack} />;
+	  case "Airtime":
+		return <Airtime onBack={handleBack} />;
+	  case "Electricity":
+		return <Electricity onBack={handleBack} />;
+	  case "Remita":
+		return <Remita onBack={handleBack} />;
+	  case "Cable":
+		return <Cable onBack={handleBack} />;
+	  case "TransferForm": // Added TransferForm case
+		return <TransferForm onBack={handleBack} />;
+	  default:
+		return null;
+	}
   };
+  
 
 	const renderTabContent = () => {
   switch (selectedTab) {
@@ -104,8 +108,13 @@ const Dashboard = () => { // Added component definition
     case "Home":
       return (
         <>
-          <TabContent selectedTab={selectedTab} />
-          <Services services={services} onServiceClick={handleServiceClick} />
+		  <Services
+  services={[
+    { title: "Funds Transfer", component: "TransferForm", },
+    // ...other services
+  ]}
+  onServiceClick={(service) => handleServiceClick(service.component)}
+/>
         </>
       );
     default:
@@ -164,6 +173,7 @@ const Dashboard = () => { // Added component definition
                 <TabContent
                   selectedTab={selectedTab}
                   transferHistory={transferHistory}
+				  onBack={() => selectedTab("Home")}
                 />
               )}
 
