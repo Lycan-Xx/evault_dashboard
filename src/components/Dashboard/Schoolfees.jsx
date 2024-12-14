@@ -24,8 +24,11 @@ const SchoolFees = ({ onBack }) => {
   const [text, setText] = useState("");
   const [amount, setAmount] = useState("");
   const [classLevel, setClassLevel] = useState("");
-  const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isPaymentDialogOpen, setIsPaymentDialogOpen] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState("card");
+  const [loading, setLoading] = useState(false);
 
   const handleBackClick = () => {
     if (selectedSchool) {
@@ -43,11 +46,8 @@ const SchoolFees = ({ onBack }) => {
   };
 
   const handleProceed = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      alert("Payment successful!");
-    }, 3000);
+    if (!classLevel || !studentName || !amount) return;
+    setIsPaymentDialogOpen(true); // Open payment popup
   };
 
   // Filter schools based on the input in the search bar
@@ -55,7 +55,6 @@ const SchoolFees = ({ onBack }) => {
     school.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
     <div className="max-w-6xl mx-auto p-6">
@@ -113,18 +112,16 @@ const SchoolFees = ({ onBack }) => {
               <h2 className="text-white text-3xl font-bold bg-black bg-opacity-50 p-4 rounded-md inline-block mt-16 ml-8">
                 {selectedSchool}
               </h2>
+			  
             </div>
 
-            {/* Profile Picture Section */}
-            <div className="flex justify-end -mt-12">
-              <div className="w-24 h-24 rounded-2xl border-4 border-white overflow-hidden shadow-lg">
-                <img
-                  src={`https://picsum.photos/100?random=${selectedSchool}`}
-                  alt={`${selectedSchool} Owner`}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+			{/* Description */}
+            <div className="mb-8">
+              <h3 className="text-xl font-bold text-gray-800">About {selectedSchool.name}</h3>
+              <p className="mt-2 text-gray-600">{selectedSchool.description}</p>
             </div>
+
+            
 
             {/* Payment Form */}
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 min-h-[500px]">
@@ -224,6 +221,140 @@ const SchoolFees = ({ onBack }) => {
           </div>
         )}
       </div>
+
+	  {isPaymentDialogOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-md">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold text-blue-600">Payment Summary</h2>
+              <button
+                className="text-gray-600 hover:text-red-600 text-xl"
+                onClick={() => setIsPaymentDialogOpen(false)}
+              >
+                &times;
+              </button>
+            </div>
+            <div className="border-b mb-4">
+              <div className="grid grid-cols-2 gap-2 text-sm font-bold text-gray-700">
+                <div>School:</div>
+                <div>{selectedSchool}</div>
+                <div>Class:</div>
+                <div>{classLevel}</div>
+                <div>Student:</div>
+                <div>{studentName}</div>
+                <div>Email:</div>
+                <div>{email || "N/A"}</div>
+                <div>Amount:</div>
+                <div>${amount}</div>
+              </div>
+            </div>
+
+			{/* Payment Methods */}
+            <div>
+              <div className="flex border-b">
+                <button
+                  className={`w-1/3 py-2 ${
+                    paymentMethod === "card" ? "border-b-4 border-blue-600 text-blue-600" : "text-gray-600"
+                  }`}
+                  onClick={() => setPaymentMethod("card")}
+                >
+                  Card
+                </button>
+                <button
+                  className={`w-1/3 py-2 ${
+                    paymentMethod === "transfer" ? "border-b-4 border-blue-600 text-blue-600" : "text-gray-600"
+                  }`}
+                  onClick={() => setPaymentMethod("transfer")}
+                >
+                  Transfer
+                </button>
+                <button
+                  className={`w-1/3 py-2 ${
+                    paymentMethod === "ussd" ? "border-b-4 border-blue-600 text-blue-600" : "text-gray-600"
+                  }`}
+                  onClick={() => setPaymentMethod("ussd")}
+                >
+                  USSD
+                </button>
+              </div>
+
+              {/* Payment Method Content */}
+              <div className="mt-4">
+			  {paymentMethod === "card" && (
+                  <div>
+                    <h3 className="text-lg font-semibold mb-2 text-gray-800">Card Payment</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Card Number</label>
+                        <input
+                          type="text"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition duration-300"
+                          placeholder="Enter Card Number"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Expiry Date</label>
+                        <input
+                          type="text"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition duration-300"
+                          placeholder="MM/YY"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">CVV</label>
+                        <input
+                          type="text"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition duration-300"
+                          placeholder="CVV"
+                        />
+                      </div>
+                    </div>
+                    <button
+                      className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700"
+                      onClick={() => console.log("Proceed with Card Payment")}
+                    >
+                      Proceed
+                    </button>
+                  </div>
+                )}
+
+
+                {paymentMethod === "transfer" && (
+                  <div>
+                    <h3 className="text-lg font-semibold mb-2 text-gray-800">Bank Transfer Details</h3>
+                    <p className="text-gray-700 text-sm">Account Number: 1234567890</p>
+                    <p className="text-gray-700 text-sm">Account Name: John Doe</p>
+                    <p className="text-gray-700 text-sm">Bank Name: ABC Bank</p>
+                    <button
+                      className="mt-4 px-6 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700"
+                      onClick={() => console.log("Proceed with Bank Transfer")}
+                    >
+                      Proceed
+                    </button>
+                  </div>
+                )}
+
+
+                {paymentMethod === "ussd" && (
+                  <div>
+                    <h3 className="text-lg font-semibold mb-2 text-gray-800">USSD Payment</h3>
+                    <p className="text-sm text-gray-700">Dial *123*456# to proceed with the payment.</p>
+                    <button
+                      className="mt-4 px-6 py-2 bg-yellow-600 text-white rounded-lg shadow hover:bg-yellow-700"
+                      onClick={() => console.log("Proceed with USSD Payment")}
+                    >
+                      Proceed
+                    </button>
+                  </div>
+                )}
+
+              </div>
+            </div>
+
+            
+          </div>
+        </div>
+      )}
 
 	 	 <button
 			onClick={() => setIsDialogOpen(!isDialogOpen)}
