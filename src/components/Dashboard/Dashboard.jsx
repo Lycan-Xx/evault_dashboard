@@ -5,7 +5,7 @@ import TopBar from "./TopBar";
 import PaymentCards from "../Dashboard/PaymentCard";
 import Services from "./Services";
 import Trade from "./Trade";
-import Vault from "./Vault";
+import Vault from "./Vault/Vault";
 import Settings from "./Settings";
 import TabContent from "./TabContents/TabContent";
 import Databundles from "./Databundles";
