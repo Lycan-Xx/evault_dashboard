@@ -25,15 +25,18 @@ const Databundles = ({ onBack }) => {
 
   // Handle back button click
   const handleBackClick = () => {
-    if (selectedService) {
-      setSelectedService(null); // Deselect the service
-    } else {
-      onBack(); // Trigger the back navigation to the Dashboard
-    }
-    setMobileNumber(""); // Reset form data
-    setPlanType("");
-    setDataPlan("");
+	if (selectedService) {
+	  if (window.confirm("Are you sure you want to go back? Unsaved progress will be lost.")) {
+		setSelectedService(null);
+		setMobileNumber("");
+		setPlanType("");
+		setDataPlan("");
+	  }
+	} else {
+	  onBack();
+	}
   };
+  
 
   const handleProceed = () => {
     setLoading(true);
