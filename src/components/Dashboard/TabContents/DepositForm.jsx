@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Layers, ArrowDownToLine, ArrowLeft } from "lucide-react";
 
-const WithdrawForm = ({ onBack }) => {
+const DepositForm = ({ onBack }) => {
   const [amount, setAmount] = useState("");
 
   const handleSubmit = (e) => {
@@ -54,4 +54,4 @@ const WithdrawForm = ({ onBack }) => {
   );
 };
 
-export default WithdrawForm;
+export default DepositForm;

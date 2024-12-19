@@ -60,17 +60,30 @@ const SchoolFees = ({ onBack }) => {
         {/* Selected School Page */}
         {selectedSchool && (
           <div>
-            {/* Banner Section */}
+            {/* Top Banner Section */}
             <div
-              className="w-full h-64 bg-cover bg-center rounded-lg"
-              style={{
-                backgroundImage: `url('https://picsum.photos/1200/400?random=${selectedSchool.name}')`,
-              }}
-            >
-              <h2 className="text-white text-3xl font-bold bg-black bg-opacity-50 p-4 rounded-md inline-block mt-16 ml-8">
-                {selectedSchool.name}
-              </h2>
+            className="w-full h-56 sm:h-64 bg-cover bg-center relative"
+            style={{
+              backgroundImage: `url('https://picsum.photos/1200/400?random=${selectedSchool.name}')`,
+            }}
+          >
+            <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+              <h2 className="text-3xl sm:text-4xl text-white font-bold">{selectedSchool.name}</h2>
             </div>
+
+            {/* Profile Picture Positioned to the Right */}
+            <div className="absolute -bottom-12 right-4 sm:right-8">
+              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-xl border-4 border-white overflow-hidden shadow-lg">
+                <img
+                  src={`https://picsum.photos/100?random=${selectedSchool.name}`}
+                  alt={`${selectedSchool.name} Owner`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          </div>
+
+			 
 
 			{/* Description */}
 			<div className="mb-8">

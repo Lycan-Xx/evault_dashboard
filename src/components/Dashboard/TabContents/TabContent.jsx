@@ -1,17 +1,8 @@
 import React from "react";
-import TransferForm from "./TransferForm";
-import WithdrawForm from "./WithdrawForm";
-import HistoryList from "./HistoryList";
 
-const TabContent = ({ selectedTab, transferHistory }) => {
-  switch (selectedTab) {
-    case "Transfer":
-      return <TransferForm />;
-    case "Withdraw":
-      return <WithdrawForm />;
-    case "History":
-      return <HistoryList transferHistory={transferHistory} />;
-    default:
+
+const TabContent = () => {
+  
       return (
 
     	<div>
@@ -24,7 +15,6 @@ const TabContent = ({ selectedTab, transferHistory }) => {
      	 </div>
       
       );
-  }
 };
 
 export default TabContent;

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { History, Printer, Share2, X } from "lucide-react";
 import clsx from "clsx";
+import transferHistoryData from "./transferHistories.json"; // Adjust path as needed
 
-const HistoryList = ({ transferHistory }) => {
+const HistoryList = () => {
   const [selectedTransaction, setSelectedTransaction] = useState(null);
 
   const closeDialog = () => setSelectedTransaction(null);
@@ -29,7 +30,7 @@ const HistoryList = ({ transferHistory }) => {
       </h4>
 
       <ul className="space-y-4">
-        {transferHistory.map((history) => (
+        {transferHistoryData.map((history) => (
           <li
             key={history.id}
             onClick={() => setSelectedTransaction(history)}
@@ -44,11 +45,9 @@ const HistoryList = ({ transferHistory }) => {
         ))}
       </ul>
 
-      {/* Dialog for Transaction Details */}
       {selectedTransaction && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white rounded-lg shadow-lg max-w-md w-full p-6 space-y-4 relative">
-            {/* Close Button */}
             <button
               onClick={closeDialog}
               className="absolute top-3 right-3 text-gray-600 hover:text-gray-800"
@@ -57,7 +56,6 @@ const HistoryList = ({ transferHistory }) => {
               <X className="w-5 h-5" />
             </button>
 
-            {/* Transaction Details */}
             <h4 className="text-xl font-bold text-center">Transaction Summary</h4>
             <div className="space-y-2">
               <p><strong>Sender:</strong> {selectedTransaction.senderName}</p>
@@ -66,7 +64,6 @@ const HistoryList = ({ transferHistory }) => {
               <p><strong>Reference Number:</strong> {selectedTransaction.referenceNumber}</p>
             </div>
 
-            {/* Action Buttons */}
             <div className="flex justify-center space-x-4 pt-4">
               <button
                 onClick={handlePrint}

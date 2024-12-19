@@ -1,22 +1,16 @@
 import React from "react";
+import AdminPage from "./Portfolio/AdminPage";
 
 const Portfolio = () => {
   return (
     <div className="max-w-7xl mx-auto p-4 space-y-8">
       {/* Business Banner Section */}
-      
 
-      <div className="bg-white p-6 rounded-lg shadow">
-       
-        <div className="flex items-center mt-6">
-          <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
-            Apply for Virtual Card
-          </button>
-          <button className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 right-1/4">
-            Edit Business Info
-          </button>
-        </div>
-      </div>
+	  <div>
+		<button>
+			<AdminPage />
+		</button>
+	  </div>
 
       {/* Personal Information Section */}
       <div className="bg-white p-6 rounded-lg shadow">

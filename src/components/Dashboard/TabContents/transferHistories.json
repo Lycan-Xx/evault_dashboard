@@ -1,0 +1,42 @@
+[
+	{
+		"id": 1,
+		"senderName": "John Doe",
+		"recipientName": "Jane Smith",
+		"amount": 200.00,
+		"referenceNumber": "TXN123456789",
+		"date": "2024-12-01"
+	},
+	{
+		"id": 2,
+		"senderName": "Alice Johnson",
+		"recipientName": "Bob Brown",
+		"amount": 350.50,
+		"referenceNumber": "TXN987654321",
+		"date": "2024-12-03"
+	},
+	{
+		"id": 3,
+		"senderName": "Charlie Green",
+		"recipientName": "Daisy Blue",
+		"amount": 150.75,
+		"referenceNumber": "TXN567891234",
+		"date": "2024-12-05"
+	},
+	{
+		"id": 4,
+		"senderName": "Emily White",
+		"recipientName": "Frank Black",
+		"amount": 500.00,
+		"referenceNumber": "TXN654321987",
+		"date": "2024-12-07"
+	},
+	{
+		"id": 5,
+		"senderName": "George Brown",
+		"recipientName": "Hannah Gray",
+		"amount": 75.25,
+		"referenceNumber": "TXN321456789",
+		"date": "2024-12-10"
+	}
+]
