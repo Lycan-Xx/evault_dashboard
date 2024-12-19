@@ -31,11 +31,11 @@ const Sidebar = ({ selectedTab, setSelectedTab, setIsSidebarCollapsed }) => {
 
   const menuItems = [
     { name: "Dashboard", icon: PieChart },
+	{ name: "Wallet Top Up", icon: Banknote },
     { name: "Trade", icon: Briefcase },
     { name: "Vault", icon: DollarSign },
     { name: "Portfolio", icon: User },
     { name: "Transfer", icon: DollarSign },
-    { name: "Deposit", icon: Banknote },
     { name: "Settings", icon: Settings },
   ];
 

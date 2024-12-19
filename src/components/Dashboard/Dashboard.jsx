@@ -95,7 +95,7 @@ const Dashboard = () => {
         return <Portfolio />;
       case "Settings":
         return <Settings />;
-      case "Deposit":
+      case "Wallet Top Up":
 		return <DepositForm />;
       case "Transfer":
         return <TransferForm />;
@@ -118,9 +118,9 @@ const Dashboard = () => {
     <div className="relative min-h-screen flex">
       {/* Background Wallpaper */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat filter blur-lg"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat filter blur-[12px]"
         style={{
-          backgroundImage: `url('https://picsum.photos/1920/1080?random=${Math.random()}')`,
+          backgroundImage: `url('https://picsum.photos/id/133/1920/1080')`,
         }}
       ></div>
 
@@ -146,7 +146,7 @@ const Dashboard = () => {
         ) : (
           <>
             <PaymentCards cardData={cardData} />
-            <div className="bg-white border rounded-lg p-4 my-4">
+            <div className="border-xl bg-blue-600 rounded-xl p-0 my-4">
               <TabContent />
             </div>
             <div className="bg-white border rounded-lg p-4 my-4">

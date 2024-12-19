@@ -25,7 +25,7 @@ const TopBar = () => {
           <div className="text-white font-bold">
             <span className="text-sm md:text-base">Wallet Balance:</span>
             <span className="ml-2 text-lg md:text-xl">
-              {showBalance ? '₦2,500.98' : '₦ * * * * *'}
+              {showBalance ? '₦467,038.98' : '₦ * * * * *'}
             </span>
           </div>
           <button

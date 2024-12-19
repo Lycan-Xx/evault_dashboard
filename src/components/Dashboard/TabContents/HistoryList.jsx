@@ -5,6 +5,7 @@ import transferHistoryData from "./transferHistories.json"; // Adjust path as ne
 
 const HistoryList = () => {
   const [selectedTransaction, setSelectedTransaction] = useState(null);
+  const [visibleHistories, setVisibleHistories] = useState(6);
 
   const closeDialog = () => setSelectedTransaction(null);
 
@@ -23,27 +24,40 @@ const HistoryList = () => {
     }
   };
 
+  const loadMoreHistories = () => {
+    setVisibleHistories((prev) => prev + 5);
+  };
+
   return (
-    <div className="p-6 bg-gray-50 rounded-md shadow-md space-y-4 transition duration-500">
+    <div className="p-6 bg-white rounded-md shadow-md space-y-4 transition duration-500">
       <h4 className="text-2xl font-bold flex items-center">
         <History className="w-6 h-6 mr-2 text-gray-600" /> Transfer History
       </h4>
 
       <ul className="space-y-4">
-        {transferHistoryData.map((history) => (
+        {transferHistoryData.slice(0, visibleHistories).map((history) => (
           <li
             key={history.id}
             onClick={() => setSelectedTransaction(history)}
-            className="p-4 bg-white border rounded-md shadow-sm hover:bg-gray-100 cursor-pointer transition duration-300"
+            className="p-4 bg-blue-200 border border-blue-500 rounded-md shadow-sm hover:bg-blue-700 hover:text-white cursor-pointer transition duration-300"
           >
             <div className="flex justify-between items-center">
-              <span className="text-gray-700 font-medium">{history.date}</span>
-              <span className="text-blue-600 font-semibold">${history.amount}</span>
+              <span className="font-medium">{history.date}</span>
+              <span className="font-semibold">${history.amount}</span>
             </div>
-            <p className="text-gray-600">To: {history.recipientName}</p>
+            <p>To: {history.recipientName}</p>
           </li>
         ))}
       </ul>
+
+      {visibleHistories < transferHistoryData.length && (
+        <button
+          onClick={loadMoreHistories}
+		  className="w-full md:w-1/4 bg-green-500 text-white py-4 rounded-xl hover:bg-green-600 transition duration-300 whitespace-nowrap">
+        
+          Load More
+        </button>
+      )}
 
       {selectedTransaction && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -56,8 +70,8 @@ const HistoryList = () => {
               <X className="w-5 h-5" />
             </button>
 
-            <h4 className="text-xl font-bold text-center">Transaction Summary</h4>
-            <div className="space-y-2">
+            <h4 className="text-xl font-bold text-center text-blue-600">Transaction Summary</h4>
+            <div className="space-y-2 text-gray-700">
               <p><strong>Sender:</strong> {selectedTransaction.senderName}</p>
               <p><strong>Recipient:</strong> {selectedTransaction.recipientName}</p>
               <p><strong>Amount:</strong> ${selectedTransaction.amount}</p>

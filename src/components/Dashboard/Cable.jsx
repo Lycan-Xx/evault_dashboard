@@ -30,7 +30,8 @@ const Cable = ({ onBack }) => {
     return newErrors;
   };
 
-  const handleProceed = () => {
+  const handleProceed = (e) => {
+    e.preventDefault();
     const formErrors = validateForm();
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
@@ -43,6 +44,11 @@ const Cable = ({ onBack }) => {
 
   const handleBackClick = () => {
     onBack(); // Trigger navigation back to the dashboard
+  };
+
+  const handleDialogClose = (e) => {
+    e.preventDefault();
+    setIsDialogOpen(false);
   };
 
   return (
@@ -162,10 +168,10 @@ const Cable = ({ onBack }) => {
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold text-[#025798]">Payment Checkout</h2>
               <button
-                className="text-gray-600 hover:text-red-600 text-xl"
-                onClick={() => setIsDialogOpen(false)}
+                onClick={handleDialogClose}
+                className="text-red-500 hover:text-red-700"
               >
-                &times;
+                Close
               </button>
             </div>
 
@@ -282,9 +288,6 @@ const Cable = ({ onBack }) => {
           </div>
         </div>
       )}
-
-
-
 
       {/* Help Dialog */}
       <button
