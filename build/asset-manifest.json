@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/evault_dashboard/static/css/main.e492f19d.css",
+    "main.js": "/evault_dashboard/static/js/main.dce804df.js",
+    "index.html": "/evault_dashboard/index.html",
+    "main.e492f19d.css.map": "/evault_dashboard/static/css/main.e492f19d.css.map",
+    "main.dce804df.js.map": "/evault_dashboard/static/js/main.dce804df.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e492f19d.css",
+    "static/js/main.dce804df.js"
+  ]
+}

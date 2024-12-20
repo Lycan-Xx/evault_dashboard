@@ -25,7 +25,7 @@ const Portfolio = () => {
           <>
             {/* Services Section */}
             <div className="bg-blue-300 p-6 rounded-lg shadow my-4">
-              <h2 className="text-xl font-semibold mb-4 text-black">Services Offered <span className="text-[0.4rem] font-bold font-mono">E.G classes in a school, meals in a restaurant, services form a mechanic</span> </h2>
+              <h2 className="text-xl font-semibold mb-4 text-black">Services Offered  <span className="text-[1rem] font-bold font-mono "> (E.G classes in a school, meals in a restaurant, services form a mechanic)</span> </h2>
               <div className="flex items-center justify-center">
                 <Services />
               </div>
