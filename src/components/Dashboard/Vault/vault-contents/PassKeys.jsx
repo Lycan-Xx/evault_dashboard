@@ -24,30 +24,53 @@ import { Label } from "./ui/label.tsx";
 
 export function Passkeys() {
 	const [passkeys, setPasskeys] = useState([
-		{ id: "1", name: "Gmail", value: "••••••••", visible: false },
-		{ id: "2", name: "GitHub", value: "••••••••", visible: false },
+		{ id: "1", name: "Gmail", value: "MySecurePass123", visible: false },
+		{ id: "2", name: "GitHub", value: "AnotherSecurePass456", visible: false },
 	]);
 
 	const [editDialogOpen, setEditDialogOpen] = useState(false);
 	const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 	const [selectedItem, setSelectedItem] = useState(null);
+	const [editedName, setEditedName] = useState("");
+	const [editedValue, setEditedValue] = useState("");
 
 	const togglePasskeyVisibility = (id) => {
-		setPasskeys(
-			passkeys.map((pk) =>
+		setPasskeys((prev) =>
+			prev.map((pk) =>
 				pk.id === id ? { ...pk, visible: !pk.visible } : pk
 			)
 		);
 	};
 
 	const handleEdit = (id) => {
+		const passkey = passkeys.find((pk) => pk.id === id);
+		setEditedName(passkey.name);
+		setEditedValue(passkey.value);
 		setSelectedItem(id);
 		setEditDialogOpen(true);
+	};
+
+	const saveEdit = () => {
+		setPasskeys((prev) =>
+			prev.map((pk) =>
+				pk.id === selectedItem
+					? { ...pk, name: editedName, value: editedValue }
+					: pk
+			)
+		);
+		setEditDialogOpen(false);
+		setSelectedItem(null);
 	};
 
 	const handleDelete = (id) => {
 		setSelectedItem(id);
 		setDeleteDialogOpen(true);
+	};
+
+	const confirmDelete = () => {
+		setPasskeys((prev) => prev.filter((pk) => pk.id !== selectedItem));
+		setDeleteDialogOpen(false);
+		setSelectedItem(null);
 	};
 
 	return (
@@ -102,7 +125,7 @@ export function Passkeys() {
 
 			{/* Edit Dialog */}
 			<Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
-				<DialogContent>
+				<DialogContent className="bg-white border border-gray-300 rounded-lg shadow-md">
 					<DialogHeader>
 						<DialogTitle>Edit Passkey</DialogTitle>
 						<DialogDescription>
@@ -112,25 +135,34 @@ export function Passkeys() {
 					<div className="grid gap-4 py-4">
 						<div className="grid gap-2">
 							<Label htmlFor="passkey-name">Name</Label>
-							<Input id="passkey-name" />
+							<Input
+								id="passkey-name"
+								value={editedName}
+								onChange={(e) => setEditedName(e.target.value)}
+							/>
 						</div>
 						<div className="grid gap-2">
 							<Label htmlFor="passkey-value">Value</Label>
-							<Input id="passkey-value" type="password" />
+							<Input
+								id="passkey-value"
+								type="text"
+								value={editedValue}
+								onChange={(e) => setEditedValue(e.target.value)}
+							/>
 						</div>
 					</div>
 					<DialogFooter>
 						<Button variant="outline" onClick={() => setEditDialogOpen(false)}>
 							Cancel
 						</Button>
-						<Button onClick={() => setEditDialogOpen(false)}>Save</Button>
+						<Button onClick={saveEdit}>Save</Button>
 					</DialogFooter>
 				</DialogContent>
 			</Dialog>
 
 			{/* Delete Dialog */}
 			<AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-				<AlertDialogContent>
+				<AlertDialogContent className="bg-white border border-gray-300 rounded-lg shadow-md">
 					<AlertDialogHeader>
 						<AlertDialogTitle>Are you sure?</AlertDialogTitle>
 						<AlertDialogDescription>
@@ -140,7 +172,9 @@ export function Passkeys() {
 					</AlertDialogHeader>
 					<AlertDialogFooter>
 						<AlertDialogCancel>Cancel</AlertDialogCancel>
-						<AlertDialogAction>Delete</AlertDialogAction>
+						<AlertDialogAction onClick={confirmDelete}>
+							Delete
+						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>

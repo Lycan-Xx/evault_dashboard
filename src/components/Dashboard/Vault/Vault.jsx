@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar } from "./vault-contents/Navbar";
+import { Navbar } from "./vault-contents/VaultNavbar";
 import { Main } from "./vault-contents/Main";
 
 function Vault() {
