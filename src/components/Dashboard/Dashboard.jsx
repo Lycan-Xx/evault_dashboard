@@ -14,7 +14,7 @@ import Airtime from "./Airtime";
 import Electricity from "./Electricity";
 import Remita from "./Remita";
 import Cable from "./Cable";
-import Portfolio from "./Portfolio";
+import Portfolio from "./Portfolio/Portfolio";
 import DepositForm from "./TabContents/DepositForm";
 import {
   PhoneCall,
