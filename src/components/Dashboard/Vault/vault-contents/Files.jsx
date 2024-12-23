@@ -1,6 +1,5 @@
-// Files.tsx
 import React, { useState } from "react";
-import { Download, Share2, Trash2, FileText, Image } from "lucide-react";
+import { Download, Share2, Trash2, FileText, Image, Plus } from "lucide-react";
 import { Button } from "./ui/button.tsx";
 import {
 	AlertDialog,
@@ -48,6 +47,10 @@ function Files() {
 	const [selectedItem, setSelectedItem] = useState(null);
 	const [shareLink, setShareLink] = useState("");
 	const [previewFile, setPreviewFile] = useState(null);
+	const [addDialogOpen, setAddDialogOpen] = useState(false);
+	const [newFileName, setNewFileName] = useState("");
+	const [newFileType, setNewFileType] = useState("");
+	const [newFileSize, setNewFileSize] = useState("");
 
 	// Delete file
 	const confirmDelete = () => {
@@ -83,9 +86,34 @@ function Files() {
 		setPreviewFile(file);
 	};
 
+	// Add new file
+	const handleAddFile = () => {
+		const newFile = {
+			id: Date.now().toString(),
+			name: newFileName,
+			type: newFileType || "Unknown",
+			size: newFileSize || "Unknown size",
+			lastModified: new Date().toISOString().split("T")[0],
+			preview: `This is a preview of ${newFileName}.`,
+		};
+		setFiles((prevFiles) => [...prevFiles, newFile]);
+		setAddDialogOpen(false);
+		setNewFileName("");
+		setNewFileType("");
+		setNewFileSize("");
+	};
+
 	return (
 		<div className="rounded-lg border bg-card text-card-foreground shadow-sm">
 			<div className="p-6">
+				<Button
+					variant="outline"
+					className="mb-4 flex items-center gap-2"
+					onClick={() => setAddDialogOpen(true)}
+				>
+					<Plus className="h-4 w-4" />
+					Add File
+				</Button>
 				<div className="space-y-4">
 					{files.map((file) => (
 						<div
@@ -138,6 +166,47 @@ function Files() {
 					))}
 				</div>
 			</div>
+
+			{/* Add File Dialog */}
+			<Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
+				<DialogContent className="bg-white border border-gray-300 rounded-lg shadow-md">
+					<DialogHeader>
+						<DialogTitle>Add New File</DialogTitle>
+					</DialogHeader>
+					<div className="grid gap-4 py-4">
+						<div className="grid gap-2">
+							<Label htmlFor="file-name">File Name</Label>
+							<Input
+								id="file-name"
+								value={newFileName}
+								onChange={(e) => setNewFileName(e.target.value)}
+							/>
+						</div>
+						<div className="grid gap-2">
+							<Label htmlFor="file-type">File Type</Label>
+							<Input
+								id="file-type"
+								value={newFileType}
+								onChange={(e) => setNewFileType(e.target.value)}
+							/>
+						</div>
+						<div className="grid gap-2">
+							<Label htmlFor="file-size">File Size</Label>
+							<Input
+								id="file-size"
+								value={newFileSize}
+								onChange={(e) => setNewFileSize(e.target.value)}
+							/>
+						</div>
+					</div>
+					<DialogFooter>
+						<Button variant="outline" onClick={() => setAddDialogOpen(false)}>
+							Cancel
+						</Button>
+						<Button onClick={handleAddFile}>Add File</Button>
+					</DialogFooter>
+				</DialogContent>
+			</Dialog>
 
 			{/* File Preview Modal */}
 			{previewFile && (

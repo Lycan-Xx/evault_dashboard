@@ -116,16 +116,12 @@ const Dashboard = () => {
 
   return (
     <div className="relative min-h-screen flex">
-      {/* Background Wallpaper */}
+      {/* Background Color */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat filter blur-[12px]"
-        style={{
-          backgroundImage: `url('https://picsum.photos/id/133/1920/1080')`,
-        }}
+        className="absolute inset-0 bg-white"
       ></div>
 
-
-      <div className="absolute inset-0 bg-black/50"></div>
+      <div className="absolute inset-0 bg-black/10"></div>
 
       {/* Sidebar */}
 	  

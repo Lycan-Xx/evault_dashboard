@@ -1,10 +1,10 @@
 import React from 'react'
-import App from './Settings/App.tsx'
+import SettingsApp from './Settings/SettingsApp.tsx'
 
 function Settings() {
   return (
     <div>
-      <App />
+      <SettingsApp />
     </div>
   )
 }

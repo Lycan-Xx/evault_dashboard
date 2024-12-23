@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Accounts from "./Accounts";
+import Accounts from "./Services/Accounts";
 
 const AdminPage = () => {
   const [formData, setFormData] = useState({

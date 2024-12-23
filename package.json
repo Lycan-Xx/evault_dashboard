@@ -1,7 +1,6 @@
 {
 	"name": "evault_payment_platform",
 	"version": "0.1.0",
-	"homepage": "https://Lycan-Xx.github.io/evault_dashboard",
 	"private": true,
 	"dependencies": {
 		"@fortawesome/fontawesome-svg-core": "^6.7.1",

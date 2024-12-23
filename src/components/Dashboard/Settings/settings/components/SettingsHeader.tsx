@@ -1,22 +1,14 @@
 import React from 'react';
-import { BackButton } from './BackButton.tsx';
+import { BackButton } from './BackButton';
 
-interface SettingsHeaderProps {
-  title: string;
-  description?: string;
-}
-
-export const SettingsHeader: React.FC<SettingsHeaderProps> = ({
-  title,
-  description,
-}) => {
-  return (
-    <div className="mb-8">
-      <BackButton />
-      <h1 className="mt-4 text-3xl font-bold text-gray-900">{title}</h1>
-      {description && (
-        <p className="mt-2 text-sm text-gray-500">{description}</p>
-      )}
-    </div>
-  );
+export const SettingsHeader = ({ title, description }) => {
+	return (
+		<div className="mb-10">
+			<BackButton />
+			<h1 className="mt-6 text-4xl font-bold text-gray-900">{title}</h1>
+			{description && (
+				<p className="mt-3 text-lg text-gray-600">{description}</p>
+			)}
+		</div>
+	);
 };
